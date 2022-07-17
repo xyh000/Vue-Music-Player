@@ -1,47 +1,53 @@
 <template lang="">
     <!-- <div class="music-box" :style="{ backgroundImage:'url('+ bgi +')' }"> -->
-    <div class="music-box">
-        <div class="music-top">
-            <div class="top-left-box">
-                <img src="../assets/image/logo.png" alt="" />
-            </div>
-            <div class="top-right-box">
-                <div class="search">
-                    <input type="text" placeholder="搜索音乐、MV、歌单用户" />
-                    <!-- <button>Search</button> -->
+    <div class="music-box" :style="{ backgroundImage:'url('+ defaultbg +')' }">
+        <div class="mask">
+            <div class="music-top">
+                <div class="top-left-box">
+                    <img src="../assets/image/logo.png" alt="" />
+                </div>
+                <div class="top-right-box">
+                    <div class="search">
+                        <input type="text" placeholder="搜索音乐、MV、歌单用户" />
+                        <!-- <button>Search</button> -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="music-middle">
-            <div class="middle-left-box">
-                <div class="songs-list">
-                    <el-table :data="tableData" style="width: 800px" height="350">
-                        <el-table-column prop="song" label="歌曲" width="200px" align="center">
-                        </el-table-column>
-                        <el-table-column prop="singer" label="歌手" width="300px" align="right">
-                        </el-table-column>
-                        <el-table-column prop="duration" label="时长" width="300px" align="center">
-                        </el-table-column>
-                    </el-table>
+            <div class="music-middle">
+                <div class="middle-left-box">
+                    <div class="songs-list">
+                        <el-table :data="tableData" style="width: 860px" height="350" @row-click="playMusic"
+                            type="index">
+                            <el-table-column prop="songIndex" label="序号" width="60px" align="center">
+                            </el-table-column>
+                            <el-table-column prop="song" label="歌曲" width="200px" align="center">
+                            </el-table-column>
+                            <el-table-column prop="singer" label="歌手" width="300px" align="right">
+                            </el-table-column>
+                            <el-table-column prop="duration" label="时长" width="300px" align="center">
+                            </el-table-column>
+                        </el-table>
 
+                    </div>
+                </div>
+                <div class="middle-right-box">
                 </div>
             </div>
-            <div class="middle-right-box">
-            </div>
-        </div>
-        <div class="music-bottom">
-            <!-- <audio :src="musicUrl" controls loop autoplay muted></audio> -->
-            <aplayer width="800px" autoplay :music="{
+            <div class="music-bottom">
+                <!-- <audio :src="musicUrl" controls loop autoplay muted></audio> -->
+                <aplayer width="800px" autoplay :music="{
           title: name,
           artist: singer,
           src: musicUrl,
           pic: this.$route.query.picUrl,
         }" />
 
+            </div>
         </div>
     </div>
 </template>
 <script>
+    import Defaultbg from '../assets/image/Bgmusicbox.jpg'
     import Aplayer from "vue-aplayer";
     export default {
         name: "musicbox",
@@ -53,17 +59,22 @@
                 tableData: JSON.parse(localStorage.getItem("songs")) || [],
                 // tableData: [],
                 // musicList: [],
+                Defaultbg,
                 name: '',
                 singer: '',
                 musicUrl: "",
                 bgi: 'url(' + this.$route.query.picUrl + ')',
                 duration: this.$route.query.duration,
                 existList: JSON.parse(localStorage.getItem("id")) || [],
-                id: this.$route.query.id
+                id: this.$route.query.id,
+                defaultbg: '',
+                songIndex: JSON.parse(localStorage.getItem("songs")) === null ? 1 : JSON.parse(localStorage.getItem(
+                    "songs")).length + 1
             };
         },
 
         created() {
+            console.log('执行created了');
             // 存在参数才调用
             if (this.$route.query.id) {
                 this.$api
@@ -76,19 +87,21 @@
                         this.name = this.$route.query.name
                         this.singer = this.$route.query.singer
                     });
-                // 切换背景图片
                 this.duration = this.songDuration(this.duration)
                 var item = {
+                    songIndex: this.songIndex,
                     song: this.$route.query.name,
                     singer: this.$route.query.singer,
-                    duration: this.duration
+                    duration: this.duration,
+                    detail: this.$route.query
                 }
                 this.insertSongs(item, this.id)
-                console.log(item);
+                this.defaultbg = this.$route.query.picUrl
             } else {
                 // 避免出现undefined
                 this.name = ' '
                 this.singer = ' '
+                this.defaultbg = this.Defaultbg
             }
             // 获得歌词
             // this.$api.getSonglyrics({
@@ -97,23 +110,11 @@
             //     console.log(res);
             // })
             // 歌曲时长
-            this.setBodyBackGround()
+
 
         },
-        beforeDestroy() {
-            // 离开页面的时候清除
-            this.clearBodyBackGround()
-        },
         methods: {
-            // 动态添加背景
-            setBodyBackGround() {
-                // document.body.style.backgroundSize = '100%'
-                document.body.style.backgroundImage = this.bgi
-            },
-            // 离开时去掉背景
-            clearBodyBackGround() {
-                document.body.style.backgroundImage = ''
-            },
+
             // 歌曲时长
             songDuration(time) {
                 let min = parseInt(time / 1000 / 60)
@@ -131,10 +132,21 @@
                 if (this.existList.indexOf(Number(id)) == -1) {
                     console.log(id);
                     this.existList.push(Number(id))
-                    this.tableData.unshift(value)
+                    this.tableData.push(value)
                 } else {
                     console.log('已存在');
                 }
+            },
+            playMusic(row) {
+                console.log('音乐信息', row);
+                this.$router.replace({
+                    name: 'musicbox',
+                    query: {
+                        ...row.detail
+                    }
+                })
+                // this.$router.go()
+
             }
         },
         watch: {
@@ -157,19 +169,6 @@
     };
 </script>
 <style scoped>
-    body {
-        /* 100%的窗口宽度和高度 */
-        width: 100vw;
-        height: 100vh;
-        /* 移除隐藏 */
-        overflow: hidden;
-        /* 背景 */
-        background-size: cover;
-        /* object-fit: cover; */
-        background: no-repeat;
-    }
-
-
     /* 播放器 */
     .aplayer {
         width: 900px !important;
