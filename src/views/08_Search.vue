@@ -61,7 +61,6 @@
     },
     methods: {
       toMusicBox(row) {
-
         this.$api.getSongDetail({
           ids: row.id,
         }).then((res) => {
@@ -110,7 +109,6 @@
           // this.picUrl = res.songs[0].al.picUrl
           return res.songs[0].al.picUrl
         })
-
       },
       // getPicUrl(row) {
       //   this.$api.getSongDetail({

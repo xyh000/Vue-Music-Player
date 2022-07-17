@@ -1,8 +1,10 @@
 <template>
-    <div class="musicvideo">
-        <div class="mvItem">
-            <video :src="mvUrl.url" controls loop autoplay muted></video>
-            <span>{{this.$route.query.mvName}}</span>
+    <div class="musicvideo" :style="{background:'url('+ this.$route.query.pic +')'}">
+        <div class="mv-mask">
+            <div class="mvItem">
+                <video :src="mvUrl.url" controls loop autoplay muted></video>
+                <span>{{this.$route.query.mvName}}</span>
+            </div>
         </div>
     </div>
 </template>

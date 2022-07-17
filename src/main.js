@@ -13,6 +13,8 @@ import './assets/css/style.css'
 import api from "./api"
 // 引入路由
 import VueRouter from 'vue-router'
+// 引入store
+import store from './store/index'
 
 // 使用路由
 Vue.use(VueRouter)
@@ -23,6 +25,7 @@ Vue.prototype.$api = api
 Vue.config.productionTip = false
 
 new Vue({
+  store,
   router,
   render: (h) => h(App)
 }).$mount("#app")

@@ -1,5 +1,4 @@
 <template lang="">
-    <!-- <div class="music-box" :style="{ backgroundImage:'url('+ bgi +')' }"> -->
     <div class="music-box" :style="{ backgroundImage:'url('+ defaultbg +')' }">
         <div class="mask">
             <div class="music-top">

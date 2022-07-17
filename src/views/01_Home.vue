@@ -154,7 +154,8 @@
           name: 'musicvideo',
           query: {
             id: item.id,
-            mvName: item.name
+            mvName: item.name,
+            pic: item.cover
           }
         })
       },

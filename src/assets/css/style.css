@@ -13,9 +13,8 @@ body {
   width: 100%;
   height: 100%;
   /* 移除隐藏 */
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   overflow-x: hidden;
-
 }
 
 /* 标题 */
@@ -181,7 +180,7 @@ body {
 .recommend .playlist-items img {
   width: 230px;
   height: 230px;
-  margin: 10px;
+  margin: 20px;
 }
 
 /* ----------新歌速递---------- */
@@ -314,8 +313,21 @@ body {
 
 /* -------------------------MusicVideo------------------------- */
 .musicvideo {
-  width: 800px;
+  /* width: 800px; */
+  width: 100vw;
+  height: 100vh;
   margin: 0 auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.mv-mask {
+  width: 100vw;
+  height: 100vh;
+  /* 半透明背景 */
+  background-color: rgba(150, 144, 144, 0.1);
+  /* 背景模糊 */
+  backdrop-filter: blur(30px);
 }
 
 .musicvideo .mvItem {
@@ -325,11 +337,12 @@ body {
 
 .musicvideo .mvItem video {
   margin-top: 30px;
+  border-radius: 5px;
 }
 
 .musicvideo .mvItem span {
   font-size: 30px;
-  color: #333333;
+  color: #fff;
 }
 
 .musicvideo .mvItem video {
@@ -337,17 +350,23 @@ body {
 }
 
 /* -------------------------MusicBox------------------------- */
-.music-box {
+.music-box{
+  overflow: hidden !important;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-size: contain;
+  background-size: cover;
+  overflow: scroll;
+}
+.mask {
+  width: 100%;
+  height: 100%;
   /* 半透明背景 */
-  background-color: rgba(150, 144, 144, 0.4);
+  background-color: rgba(150, 144, 144, 0.1);
   /* 背景模糊 */
   backdrop-filter: blur(30px);
-  overflow: scroll;
+
 }
 
 .music-box .music-top {
@@ -367,7 +386,7 @@ body {
   left: 10px;
 }
 
-.music-box .music-top .top-right-box{
+.music-box .music-top .top-right-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -377,7 +396,7 @@ body {
   right: 30px;
 }
 
-.music-box .music-top .top-right-box .search{
+.music-box .music-top .top-right-box .search {
   margin-right: 30px;
 }
 
@@ -419,15 +438,17 @@ body {
 }
 
 /* 表格内字体大小 */
-.songs-list .el-table{
+.songs-list .el-table {
   color: #E4E7EB;
   font-size: 18px;
 }
 
 /*最外层透明*/
-.songs-list .el-table, .songs-list .el-table__expanded-cell{
+.songs-list .el-table,
+.songs-list .el-table__expanded-cell {
   background-color: transparent;
 }
+
 /* 表格内背景颜色 */
 .songs-list .el-table th,
 .songs-list .el-table tr,
@@ -445,7 +466,7 @@ body {
 /* 鼠标悬浮背景 */
 .songs-list .el-table--enable-row-hover .el-table__body tr:hover>td {
   background-color: rgba(254, 253, 253, 0.3) !important;
-  filter:brightness(1);
+  filter: brightness(1);
   color: #EBEEF1;
 }
 
@@ -465,8 +486,7 @@ body {
 
 .aplayer-bar-wrap .aplayer-bar .aplayer-loaded,
 .aplayer-bar-wrap .aplayer-bar .aplayer-played,
-.aplayer-bar-wrap .aplayer-bar
- {
+.aplayer-bar-wrap .aplayer-bar {
   height: 4px !important;
 }
 
@@ -483,7 +503,7 @@ body {
 }
 
 /* 表格内字体大小 */
-.search-container .el-table{
-  color:  #646464 !important;
+.search-container .el-table {
+  color: #646464 !important;
   font-size: 18px;
 }

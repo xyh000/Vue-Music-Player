@@ -56,6 +56,12 @@ const api = {
   getSongDetail (params) {
     return get('/api/song/detail?', params)
   },
+
+  //  获取验证码
+  getAuthCode (params) {
+    return get('/api/captcha/sent?', params)
+  },
+
   // 登录接口
   login (params) {
     return get('/api/login/cellphone?', params)

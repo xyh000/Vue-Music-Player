@@ -19,7 +19,7 @@ export default {
   <div>
     <!-- <Navbar></Navbar> -->
     <!-- <div class="middle-box"></div> -->
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
     <!-- <keep-alive include="musicbox">
       <router-view></router-view>
 
@@ -35,6 +35,7 @@ export default {
     components: {
       Navbar,
     },
+
   };
 </script>
 <style lang="css">

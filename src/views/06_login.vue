@@ -9,7 +9,7 @@
         </div>
         <div class="form-box">
             <div class="tit">login</div>
-            <input type="tel" v-model="phone" placeholder="手机号" />
+            <input type="tel" v-model="phone" placeholder="手机号" @keyup.enter="getAuthCode" />
             <input type="text" v-model="captcha" placeholder="验证码" />
             <button @click="loginHandle">登录</button>
         </div>
@@ -18,13 +18,31 @@
 <script>
     export default {
         name: 'login',
+        data() {
+            return {
+                phone: '',
+                captcha: ''
+            }
+        },
         methods: {
+            getAuthCode() {
+                this.$api.getAuthCode({
+                    phone: this.phone
+                }).then(res => {
+                    console.log(res);
+                })
+            },
             loginHandle() {
                 this.$api.login({
                     phone: this.phone,
                     captcha: this.captcha
                 }).then(res => {
-                        console.log(res);
+                        console.log('handle', res);
+                        this.$store.commit('loginAbout/setToken', res.token)
+                        confirm('您已成功登录!')
+                        this.$router.replace({
+                            name: 'home'
+                        });
                     },
                     err => {
                         console.log(err.message);
@@ -52,7 +70,7 @@
         /* 设置视距 */
         perspective: 5px;
         /* 设置3D元素的基点位置 */
-        perspective-origin: 50% 50%;
+        perspective-origin: 60% 70%;
     }
 
     .wrap {
@@ -60,8 +78,8 @@
         position: absolute;
         width: 1000px;
         height: 1000px;
-        left: -500px;
-        top: -500px;
+        left: -400px;
+        top: -400px;
         /* 开启3D效果 */
         transform-style: preserve-3d;
         /* 执行动画：动画名 时长 线性的 无限次播放 */
@@ -156,6 +174,9 @@
         font-weight: bold;
         cursor: pointer;
     }
+
+
+
 
     .form-box button:hover {
         background: #0098d4;
